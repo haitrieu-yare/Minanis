@@ -11,9 +11,11 @@ public class ProductBatch
     [ForeignKey("ProductId")]
     public int ProductId { get; set; }
 
+    [Column(TypeName = "decimal(18,4)")]
     [Range(0.0, double.MaxValue, ErrorMessage = Constants.RangeValidation)]
     public decimal BuyingPrice { get; set; }
 
+    [Column(TypeName = "decimal(18,4)")]
     [Range(0.0, double.MaxValue, ErrorMessage = Constants.RangeValidation)]
     public decimal SellingPrice { get; set; }
 
