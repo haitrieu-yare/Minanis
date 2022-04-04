@@ -9,4 +9,6 @@ public interface IProductService
         int pageSize,
         CancellationToken cancellationToken
     );
+
+    public Task<Result<ProductDto>> GetProductById(int id, CancellationToken cancellationToken);
 }

@@ -1,6 +1,6 @@
 namespace Domain;
 
-public static class Constants
+public static class DomainConstants
 {
     public const string RangeValidation = "The field {0} must be greater than {1}.";
 

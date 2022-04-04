@@ -13,17 +13,17 @@ public class Product
     public string Name { get; set; } = string.Empty;
 
     [Column(TypeName = "decimal(18,4)")]
-    [Range(0.0, double.MaxValue, ErrorMessage = Constants.RangeValidation)]
+    [Range(0.0, double.MaxValue, ErrorMessage = DomainConstants.RangeValidation)]
     public decimal BuyingPrice { get; set; }
 
     [Column(TypeName = "decimal(18,4)")]
-    [Range(0.0, double.MaxValue, ErrorMessage = Constants.RangeValidation)]
+    [Range(0.0, double.MaxValue, ErrorMessage = DomainConstants.RangeValidation)]
     public decimal SellingPrice { get; set; }
 
-    [Range(0, int.MaxValue, ErrorMessage = Constants.RangeValidation)]
+    [Range(0, int.MaxValue, ErrorMessage = DomainConstants.RangeValidation)]
     public int Quantity { get; set; }
 
-    public string Status { get; set; } = Constants.New;
+    public string Status { get; set; } = DomainConstants.New;
     public DateTime CreatedDate { get; set; } = DateTime.Now;
 
     public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();

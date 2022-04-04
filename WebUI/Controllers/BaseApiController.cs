@@ -63,11 +63,23 @@ public class BaseApiController : ControllerBase
         switch (result.IsSuccess)
         {
             case true when result.Value == null:
-                return NotFound(NotFoundMessage);
+                return NotFound(new CustomResponse
+                {
+                    StatusCode = NotFoundStatusCode,
+                    Message = NotFoundMessage,
+                });
             case false when !string.IsNullOrEmpty(result.NotFoundMessage):
-                return NotFound(result.NotFoundMessage);
+                return NotFound(new CustomResponse
+                {
+                    StatusCode = NotFoundStatusCode,
+                    Message = result.NotFoundMessage,
+                });
             case false when result.IsUnauthorized:
-                return new ObjectResult(result.UnauthorizedMessage) {StatusCode = 403};
+                return new ObjectResult(new CustomResponse
+                {
+                    StatusCode = ForbiddenStatusCode,
+                    Message = result.UnauthorizedMessage ?? ApiConstants.Unauthorized,
+                }) {StatusCode = NotFoundStatusCode};
             case true when result.Value != null:
             {
                 #region CREATED - 201
@@ -86,8 +98,12 @@ public class BaseApiController : ControllerBase
                     newResourceUrl.Append(Slash);
                     newResourceUrl.Append(result.NewResourceId);
 
-                    return Created(newResourceUrl.ToString(),
-                        new {message = result.SuccessMessage, data = result.Value});
+                    return Created(newResourceUrl.ToString(), new CustomResponse
+                    {
+                        StatusCode = CreatedStatusCode,
+                        Message = result.SuccessMessage ?? Success,
+                        Data = result.Value,
+                    });
                 }
 
                 #endregion
@@ -95,7 +111,12 @@ public class BaseApiController : ControllerBase
                 #region NORMAL - 200
 
                 if (result.Pagination is null)
-                    return Ok(new {message = result.SuccessMessage, data = result.Value});
+                    return Ok(new CustomResponse
+                    {
+                        StatusCode = SuccessStatusCode,
+                        Message = result.SuccessMessage ?? Success,
+                        Data = result.Value
+                    });
 
                 #endregion
 
@@ -108,60 +129,64 @@ public class BaseApiController : ControllerBase
                     .Append(QuestionMark)
                     .Append(queryStringWithoutPagination).ToString();
 
-                List<object> linkData = new()
+                List<LinkData> linkData = new()
                 {
-                    new
+                    new LinkData
                     {
-                        href = BuildPaginationUrl(SelfRelation, urlWithoutPagination, result.Pagination),
-                        rel = SelfRelation
+                        Href = BuildPaginationUrl(SelfRelation, urlWithoutPagination, result.Pagination),
+                        Rel = SelfRelation
                     },
-                    new
+                    new LinkData
                     {
-                        href = BuildPaginationUrl(FirstRelation, urlWithoutPagination, result.Pagination),
-                        rel = FirstRelation
+                        Href = BuildPaginationUrl(FirstRelation, urlWithoutPagination, result.Pagination),
+                        Rel = FirstRelation
                     },
-                    new
+                    new LinkData
                     {
-                        href = BuildPaginationUrl(LastRelation, urlWithoutPagination, result.Pagination),
-                        rel = LastRelation
+                        Href = BuildPaginationUrl(LastRelation, urlWithoutPagination, result.Pagination),
+                        Rel = LastRelation
                     }
                 };
 
                 if (result.Pagination.PageNo > 1 && result.Pagination.PageNo <= result.Pagination.TotalPage)
-                    linkData.Add(new
+                    linkData.Add(new LinkData
                     {
-                        href = BuildPaginationUrl(PrevRelation, urlWithoutPagination, result.Pagination),
-                        rel = PrevRelation
+                        Href = BuildPaginationUrl(PrevRelation, urlWithoutPagination, result.Pagination),
+                        Rel = PrevRelation
                     });
 
                 if (result.Pagination.PageNo >= 1 && result.Pagination.PageNo < result.Pagination.TotalPage)
-                    linkData.Add(new
+                    linkData.Add(new LinkData
                     {
-                        href = BuildPaginationUrl(NextRelation, urlWithoutPagination, result.Pagination),
-                        rel = NextRelation
+                        Href = BuildPaginationUrl(NextRelation, urlWithoutPagination, result.Pagination),
+                        Rel = NextRelation
                     });
 
-                var response = new
+                var customResponse = new CustomResponse
                 {
-                    message = result.SuccessMessage,
-                    metaData = new
+                    StatusCode = SuccessStatusCode,
+                    Message = result.SuccessMessage ?? Success,
+                    MetaData = new Pagination()
                     {
-                        page = result.Pagination.PageNo,
-                        limit = result.Pagination.PageSize,
-                        count = result.Pagination.Count,
-                        totalRecord = result.Pagination.TotalRecord,
-                        totalPage = result.Pagination.TotalPage
+                        PageNo = result.Pagination.PageNo,
+                        PageSize = result.Pagination.PageSize,
+                        Count = result.Pagination.Count,
+                        TotalRecord = result.Pagination.TotalRecord,
+                        TotalPage = result.Pagination.TotalPage
                     },
-                    linkData,
-                    data = result.Value
+                    LinkData = linkData,
+                    Data = result.Value
                 };
 
-                return Ok(response);
+                return Ok(customResponse);
 
                 #endregion
             }
             default:
-                return BadRequest(result.ErrorMessage);
+                return BadRequest(new CustomResponse
+                {
+                    Message = result.ErrorMessage ?? Failed
+                });
         }
     }
 }

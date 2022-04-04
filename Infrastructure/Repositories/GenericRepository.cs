@@ -1,4 +1,5 @@
-﻿using Domain.Interfaces;
+﻿using System.Linq.Expressions;
+using Domain.Interfaces;
 using Domain.Specifications;
 using Microsoft.EntityFrameworkCore;
 
@@ -19,9 +20,15 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             .CountAsync(cancellationToken);
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync(int pageNo, int pageSize, CancellationToken cancellationToken)
+    public async Task<IEnumerable<T>> GetAllAsync(
+        int pageNo,
+        int pageSize,
+        Expression<Func<T, object>> orderBy,
+        CancellationToken cancellationToken
+    )
     {
         return await _context.Set<T>()
+            .OrderBy(orderBy)
             .Skip((pageNo - 1) * pageSize)
             .Take(pageSize)
             .ToListAsync(cancellationToken);
