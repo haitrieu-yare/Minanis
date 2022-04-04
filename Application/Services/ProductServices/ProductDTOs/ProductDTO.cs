@@ -1,9 +1,10 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using Domain.Entities;
 
-namespace WebUI.Controllers.ProductController.ProductDTOs;
+namespace Application.Services.ProductServices.ProductDTOs;
 
 [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+[SuppressMessage("ReSharper", "MemberCanBePrivate.Global")]
 public class ProductDto
 {
     public ProductDto(Product product)

@@ -18,6 +18,6 @@ public static class ApiConstants
     public const string LastRelation = "last";
     public const string PrevRelation = "prev";
     public const string NextRelation = "next";
-        
+
     public const string NotFoundMessage = "No records found.";
 }

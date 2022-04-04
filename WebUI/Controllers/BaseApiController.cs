@@ -21,43 +21,44 @@ public class BaseApiController : ControllerBase
         return string.Join(Ampersand, queryStringWithoutPagination.ToArray());
     }
 
-    private static string BuildPaginationUrl(string relation, StringBuilder urlWithoutPagination, Pagination pagination)
+    private static string BuildPaginationUrl(string relation, string urlWithoutPagination, Pagination pagination)
     {
-        urlWithoutPagination
+        var urlWithPaginationBuilder = new StringBuilder(urlWithoutPagination)
             .Append(PageNo)
             .Append(EqualSign);
 
         switch (relation)
         {
             case SelfRelation:
-                urlWithoutPagination.Append(pagination.PageNo);
+                urlWithPaginationBuilder.Append(pagination.PageNo);
                 break;
             case FirstRelation:
-                urlWithoutPagination.Append(FirstPage);
+                urlWithPaginationBuilder.Append(FirstPage);
                 break;
             case LastRelation:
-                urlWithoutPagination.Append(pagination.LastPage);
+                urlWithPaginationBuilder.Append(pagination.TotalPage);
                 break;
             case PrevRelation:
-                urlWithoutPagination.Append(pagination.PageNo - 1);
+                urlWithPaginationBuilder.Append(pagination.PageNo - 1);
                 break;
             case NextRelation:
-                urlWithoutPagination.Append(pagination.PageNo + 1);
+                urlWithPaginationBuilder.Append(pagination.PageNo + 1);
                 break;
         }
 
-        urlWithoutPagination
+        urlWithPaginationBuilder
             .Append(Ampersand)
             .Append(PageSize)
             .Append(EqualSign)
             .Append(pagination.PageSize);
 
-        return urlWithoutPagination.ToString();
+        return urlWithPaginationBuilder.ToString();
     }
 
     protected ActionResult HandleResult<T>(Result<T> result)
     {
-        var controllerName = Request.Path.ToString().Split(BaseUrl).Last().Split(Slash).First();
+        ReadOnlySpan<char> controllerName = Request.Path.ToString();
+        controllerName = controllerName[1..];
 
         switch (result.IsSuccess)
         {
@@ -102,10 +103,10 @@ public class BaseApiController : ControllerBase
 
                 var queryStringWithoutPagination = RemoveQueryStringPagination(Request.QueryString.ToString());
 
-                var urlWithoutPagination = new StringBuilder(Slash.ToString());
-                urlWithoutPagination.Append(controllerName);
-                urlWithoutPagination.Append(QuestionMark);
-                urlWithoutPagination.Append(queryStringWithoutPagination);
+                var urlWithoutPagination = new StringBuilder(Slash.ToString())
+                    .Append(controllerName)
+                    .Append(QuestionMark)
+                    .Append(queryStringWithoutPagination).ToString();
 
                 List<object> linkData = new()
                 {
@@ -126,14 +127,14 @@ public class BaseApiController : ControllerBase
                     }
                 };
 
-                if (result.Pagination.PageNo > 1 && result.Pagination.PageNo <= result.Pagination.LastPage)
+                if (result.Pagination.PageNo > 1 && result.Pagination.PageNo <= result.Pagination.TotalPage)
                     linkData.Add(new
                     {
                         href = BuildPaginationUrl(PrevRelation, urlWithoutPagination, result.Pagination),
                         rel = PrevRelation
                     });
 
-                if (result.Pagination.PageNo >= 1 && result.Pagination.PageNo < result.Pagination.LastPage)
+                if (result.Pagination.PageNo >= 1 && result.Pagination.PageNo < result.Pagination.TotalPage)
                     linkData.Add(new
                     {
                         href = BuildPaginationUrl(NextRelation, urlWithoutPagination, result.Pagination),
@@ -148,7 +149,6 @@ public class BaseApiController : ControllerBase
                         page = result.Pagination.PageNo,
                         limit = result.Pagination.PageSize,
                         count = result.Pagination.Count,
-                        lastPage = result.Pagination.LastPage,
                         totalRecord = result.Pagination.TotalRecord,
                         totalPage = result.Pagination.TotalPage
                     },

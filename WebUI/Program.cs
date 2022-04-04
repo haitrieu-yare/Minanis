@@ -1,6 +1,9 @@
+using Application.Interfaces;
+using Application.Services.ProductServices;
 using Domain.Interfaces;
 using Infrastructure;
 using Infrastructure.Repositories;
+using Infrastructure.UnitOfWorks;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -25,7 +28,9 @@ builder.Services.AddCors(opt =>
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
 
-builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+builder.Services.AddScoped<IProductUnitOfWork, ProductUnitOfWork>();
+builder.Services.AddScoped<IProductService, ProductService>();
 
 var app = builder.Build();
 

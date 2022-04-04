@@ -13,18 +13,32 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
         _context = context;
     }
 
-    public async Task<IEnumerable<T>> GetAllAsync()
+    public async Task<int> CountAsync(CancellationToken cancellationToken)
     {
-        return await _context.Set<T>().ToListAsync();
+        return await _context.Set<T>()
+            .CountAsync(cancellationToken);
     }
 
-    public async Task<T?> GetByIdAsync(int id)
+    public async Task<IEnumerable<T>> GetAllAsync(int pageNo, int pageSize, CancellationToken cancellationToken)
     {
-        return await _context.Set<T>().FindAsync(id);
+        return await _context.Set<T>()
+            .Skip((pageNo - 1) * pageSize)
+            .Take(pageSize)
+            .ToListAsync(cancellationToken);
     }
 
-    public IEnumerable<T> FindWithSpecificationPattern(ISpecification<T> specification)
+    public async Task<T?> GetByIdAsync(int id, CancellationToken cancellationToken)
     {
-        return SpecificationEvaluator<T>.GetQuery(_context.Set<T>().AsQueryable(), specification);
+        return await _context.Set<T>().FindAsync(new object?[] {id}, cancellationToken);
+    }
+
+    public async Task<List<T>> FindWithSpecificationPattern(
+        ISpecification<T> specification,
+        CancellationToken cancellationToken
+    )
+    {
+        return await SpecificationEvaluator<T>
+            .GetQuery(_context.Set<T>().AsQueryable(), specification)
+            .ToListAsync(cancellationToken);
     }
 }
