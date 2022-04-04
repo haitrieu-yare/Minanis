@@ -99,7 +99,7 @@ public class BaseApiController : ControllerBase
 
                 #endregion
 
-                #region Pagination - 200
+                #region PAGINATION - 200
 
                 var queryStringWithoutPagination = RemoveQueryStringPagination(Request.QueryString.ToString());
 

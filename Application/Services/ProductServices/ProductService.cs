@@ -43,7 +43,7 @@ public class ProductService : IProductService
             var pagination = new Pagination(pageNo, pageSize, productDtoList.Count, totalRecord, totalPage);
 
             _logger.LogInformation(SuccessfullyGetAllProducts);
-            return Result<List<ProductDto>>.Success(productDtoList, SuccessfullyGetAllProducts, pagination);
+            return Result<List<ProductDto>>.Success(productDtoList, pagination, SuccessfullyGetAllProducts);
         }
         catch (Exception ex) when (ex is TaskCanceledException)
         {
