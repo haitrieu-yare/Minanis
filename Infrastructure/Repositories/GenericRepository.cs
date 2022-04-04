@@ -48,4 +48,9 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
             .GetQuery(_context.Set<T>().AsQueryable(), specification)
             .ToListAsync(cancellationToken);
     }
+
+    public async Task CreateAsync(T t, CancellationToken cancellationToken)
+    {
+        await _context.Set<T>().AddAsync(t, cancellationToken);
+    }
 }

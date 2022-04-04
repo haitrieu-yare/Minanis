@@ -4,6 +4,7 @@ public static class ApiConstants
 {
     public const int SuccessStatusCode = 200;
     public const int CreatedStatusCode = 201;
+    public const int BadRequestStatusCode = 400;
     public const int ForbiddenStatusCode = 403;
     public const int NotFoundStatusCode = 404;
     

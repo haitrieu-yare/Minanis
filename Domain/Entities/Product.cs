@@ -5,6 +5,7 @@ using System.Diagnostics.CodeAnalysis;
 namespace Domain.Entities;
 
 [SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
+[SuppressMessage("ReSharper", "PropertyCanBeMadeInitOnly.Global")]
 public class Product
 {
     [Key]

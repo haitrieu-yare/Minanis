@@ -1,5 +1,6 @@
 using System.ComponentModel.DataAnnotations;
 using Application.Interfaces;
+using Application.Services.ProductServices.ProductDTOs;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebUI.Controllers;
@@ -26,8 +27,20 @@ public class ProductController : BaseApiController
     }
 
     [HttpGet("{id:int}", Name = "GetProductById")]
-    public async Task<IActionResult> GetProductById(int id, CancellationToken cancellationToken)
+    public async Task<IActionResult> GetProductById(
+        int id,
+        CancellationToken cancellationToken
+    )
     {
         return HandleResult(await _productService.GetProductById(id, cancellationToken));
+    }
+
+    [HttpPost(Name = "CreateProduct")]
+    public async Task<IActionResult> CreateProduct(
+        ProductCreationDto productCreationDto,
+        CancellationToken cancellationToken
+    )
+    {
+        return HandleResult(await _productService.CreateProduct(productCreationDto, cancellationToken));
     }
 }

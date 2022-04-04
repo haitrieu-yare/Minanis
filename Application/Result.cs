@@ -27,10 +27,9 @@ public class Result<T>
         SuccessMessage = successMessage
     };
 
-    public static Result<T> Created(T value, string newResourceId, string successMessage) => new()
+    public static Result<T> Created(string newResourceId, string successMessage) => new()
     {
         IsSuccess = true,
-        Value = value,
         NewResourceId = newResourceId,
         SuccessMessage = successMessage
     };

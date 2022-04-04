@@ -102,7 +102,7 @@ public class BaseApiController : ControllerBase
                     {
                         StatusCode = CreatedStatusCode,
                         Message = result.SuccessMessage ?? Success,
-                        Data = result.Value,
+                        Data = result.NewResourceId,
                     });
                 }
 
@@ -185,6 +185,7 @@ public class BaseApiController : ControllerBase
             default:
                 return BadRequest(new CustomResponse
                 {
+                    StatusCode = BadRequestStatusCode,
                     Message = result.ErrorMessage ?? Failed
                 });
         }

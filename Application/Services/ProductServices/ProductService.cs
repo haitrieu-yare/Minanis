@@ -1,7 +1,11 @@
-﻿using Application.Interfaces;
+﻿using System.Text;
+using Application.Interfaces;
 using Application.Services.ProductServices.ProductDTOs;
 using Domain;
+using Domain.Entities;
 using Domain.Interfaces;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using static Application.ApplicationConstants;
 
@@ -59,7 +63,10 @@ public class ProductService : IProductService
         }
     }
 
-    public async Task<Result<ProductDto>> GetProductById(int id, CancellationToken cancellationToken)
+    public async Task<Result<ProductDto>> GetProductById(
+        int id,
+        CancellationToken cancellationToken
+    )
     {
         try
         {
@@ -72,7 +79,7 @@ public class ProductService : IProductService
                 _logger.LogInformation(ProductDoesNotExist);
                 return Result<ProductDto>.NotFound(ProductDoesNotExist);
             }
-            
+
             var productDto = new ProductDto(product);
 
             _logger.LogInformation(SuccessfullyGetProductById);
@@ -87,6 +94,72 @@ public class ProductService : IProductService
         {
             _logger.LogInformation("{Exception}", ex.InnerException?.Message ?? ex.Message);
             return Result<ProductDto>.Failure(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    public async Task<Result<bool>> CreateProduct(
+        ProductCreationDto productCreationDto,
+        CancellationToken cancellationToken
+    )
+    {
+        try
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            var product = new Product
+            {
+                Name = productCreationDto.Name!,
+                BuyingPrice = productCreationDto.BuyingPrice!.Value,
+                SellingPrice = productCreationDto.SellingPrice!.Value,
+                Quantity = productCreationDto.Quantity!.Value,
+            };
+
+            await _productUnitOfWork.Products.CreateAsync(product, cancellationToken);
+            var result = await _productUnitOfWork.SaveChangesAsync(cancellationToken) > 0;
+
+            if (!result)
+            {
+                _logger.LogInformation(FailedToCreateNewProduct);
+                return Result<bool>.Failure(FailedToCreateNewProduct);
+            }
+
+            _logger.LogInformation(SuccessfullyGetProductById);
+            return Result<bool>.Created(product.Id.ToString(), SuccessfullyGetProductById);
+        }
+        catch (Exception ex) when (ex is TaskCanceledException)
+        {
+            _logger.LogInformation(TaskCancelled);
+            return Result<bool>.Failure(TaskCancelled);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is SqlException)
+        {
+            if (ex.InnerException is SqlException {Number: SqlExceptionErrorCode})
+            {
+                var exceptionErrorMessage = ex.InnerException?.Message;
+                var errorMessage = new StringBuilder(CanNotInsertDuplicatedValue);
+                errorMessage.Append(Period);
+                errorMessage.Append(WhiteSpace);
+                
+                if (exceptionErrorMessage is not null)
+                {
+                    errorMessage.Append(TheDuplicatedValueIs);
+                    errorMessage.Append(WhiteSpace);
+                    errorMessage.Append(OpenParenthesis);
+                    errorMessage.Append(exceptionErrorMessage.Split(OpenParenthesis)[1].Split(CloseParenthesis)[0]);
+                    errorMessage.Append(CloseParenthesis);
+                }
+
+                _logger.LogInformation("{Exception}", errorMessage.ToString());
+                return Result<bool>.Failure(errorMessage.ToString());
+            }
+
+            _logger.LogInformation("{Exception}", ex.InnerException?.Message ?? ex.Message);
+            return Result<bool>.Failure(ex.InnerException?.Message ?? ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation("{Exception}", ex.InnerException?.Message ?? ex.Message);
+            return Result<bool>.Failure(ex.InnerException?.Message ?? ex.Message);
         }
     }
 }

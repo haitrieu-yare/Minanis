@@ -11,4 +11,6 @@ public interface IProductService
     );
 
     public Task<Result<ProductDto>> GetProductById(int id, CancellationToken cancellationToken);
+
+    public Task<Result<bool>> CreateProduct(ProductCreationDto productCreationDto, CancellationToken cancellationToken);
 }
