@@ -1,8 +1,10 @@
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Domain.Entities;
 
+[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public class Product
 {
     [Key]
@@ -23,6 +25,6 @@ public class Product
 
     public string Status { get; set; } = Constants.New;
     public DateTime CreatedDate { get; set; } = DateTime.Now;
-    
+
     public ICollection<OrderProduct> OrderProducts { get; set; } = new List<OrderProduct>();
 }

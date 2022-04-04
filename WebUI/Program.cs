@@ -23,6 +23,8 @@ builder.Services.AddCors(opt =>
         policy => { policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin(); });
 });
 
+builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
+
 builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
 
 var app = builder.Build();

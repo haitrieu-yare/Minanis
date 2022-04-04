@@ -3,11 +3,11 @@ using Domain.Interfaces;
 using Domain.Specifications.Products;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUI.Controllers;
+namespace WebUI.Controllers.ProductController;
 
 [ApiController]
 [Route("[controller]")]
-public class ProductController : ControllerBase
+public class ProductController : BaseApiController
 {
     private readonly ILogger<ProductController> _logger;
     private readonly IGenericRepository<Product> _repository;
