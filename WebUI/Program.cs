@@ -1,4 +1,6 @@
+using Domain.Interfaces;
 using Infrastructure;
+using Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -21,6 +23,8 @@ builder.Services.AddCors(opt =>
         policy => { policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin(); });
 });
 
+builder.Services.AddScoped(typeof(IGenericRepository<>), (typeof(GenericRepository<>)));
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -36,9 +40,3 @@ app.UseAuthorization();
 app.MapControllers();
 
 app.Run();
-
-var message = $"App start at {DateTime.UtcNow}";
-
-var startAppLog = LoggerMessage.Define(LogLevel.Information, new EventId(1, nameof(app)), message);
-
-startAppLog.Invoke(app.Logger, null);

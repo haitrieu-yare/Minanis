@@ -9,11 +9,11 @@ public class DataContext : DbContext
     {
     }
 
-    private DbSet<User> User => Set<User>();
-    private DbSet<Product> Product => Set<Product>();
-    private DbSet<ProductBatch> ProductBatch => Set<ProductBatch>();
-    private DbSet<Order> Order => Set<Order>();
-    private DbSet<OrderProduct> OrderProduct => Set<OrderProduct>();
+    public DbSet<User> User => Set<User>();
+    public DbSet<Product> Product => Set<Product>();
+    public DbSet<ProductBatch> ProductBatch => Set<ProductBatch>();
+    public DbSet<Order> Order => Set<Order>();
+    public DbSet<OrderProduct> OrderProduct => Set<OrderProduct>();
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
