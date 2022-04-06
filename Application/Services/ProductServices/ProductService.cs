@@ -123,8 +123,8 @@ public class ProductService : IProductService
                 return Result<bool>.Failure(FailedToCreateNewProduct);
             }
 
-            _logger.LogInformation(SuccessfullyGetProductById);
-            return Result<bool>.Created(product.Id.ToString(), SuccessfullyGetProductById);
+            _logger.LogInformation(SuccessfullyCreateNewProduct);
+            return Result<bool>.Created(product.Id.ToString(), SuccessfullyCreateNewProduct);
         }
         catch (Exception ex) when (ex is TaskCanceledException)
         {
@@ -139,7 +139,80 @@ public class ProductService : IProductService
                 var errorMessage = new StringBuilder(CanNotInsertDuplicatedValue);
                 errorMessage.Append(Period);
                 errorMessage.Append(WhiteSpace);
-                
+
+                if (exceptionErrorMessage is not null)
+                {
+                    errorMessage.Append(TheDuplicatedValueIs);
+                    errorMessage.Append(WhiteSpace);
+                    errorMessage.Append(OpenParenthesis);
+                    errorMessage.Append(exceptionErrorMessage.Split(OpenParenthesis)[1].Split(CloseParenthesis)[0]);
+                    errorMessage.Append(CloseParenthesis);
+                }
+
+                _logger.LogInformation("{Exception}", errorMessage.ToString());
+                return Result<bool>.Failure(errorMessage.ToString());
+            }
+
+            _logger.LogInformation("{Exception}", ex.InnerException?.Message ?? ex.Message);
+            return Result<bool>.Failure(ex.InnerException?.Message ?? ex.Message);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogInformation("{Exception}", ex.InnerException?.Message ?? ex.Message);
+            return Result<bool>.Failure(ex.InnerException?.Message ?? ex.Message);
+        }
+    }
+
+    public async Task<Result<bool>> UpdateProduct(ProductDto productDto, CancellationToken cancellationToken)
+    {
+        try
+        {
+            cancellationToken.ThrowIfCancellationRequested();
+
+            if (!productDto.Id.HasValue)
+            {
+                _logger.LogInformation(FailedToUpdateProduct);
+                return Result<bool>.Failure(FailedToUpdateProduct);
+            }
+
+            var product = await _productUnitOfWork.Products.GetByIdAsync(productDto.Id.Value, cancellationToken);
+
+            if (product is null)
+            {
+                _logger.LogInformation(FailedToUpdateProduct);
+                return Result<bool>.Failure(FailedToUpdateProduct);
+            }
+
+            product.Name = productDto.Name ?? product.Name;
+            product.BuyingPrice = productDto.BuyingPrice ?? product.BuyingPrice;
+            product.SellingPrice = productDto.SellingPrice ?? product.SellingPrice;
+            product.Quantity = productDto.Quantity ?? product.Quantity;
+
+            var result = await _productUnitOfWork.SaveChangesAsync(cancellationToken) > 0;
+
+            if (!result)
+            {
+                _logger.LogInformation(FailedToUpdateProduct);
+                return Result<bool>.Failure(FailedToUpdateProduct);
+            }
+
+            _logger.LogInformation(SuccessfullyUpdateProduct);
+            return Result<bool>.Success(true, SuccessfullyUpdateProduct);
+        }
+        catch (Exception ex) when (ex is TaskCanceledException)
+        {
+            _logger.LogInformation(TaskCancelled);
+            return Result<bool>.Failure(TaskCancelled);
+        }
+        catch (DbUpdateException ex) when (ex.InnerException is SqlException)
+        {
+            if (ex.InnerException is SqlException {Number: SqlExceptionErrorCode})
+            {
+                var exceptionErrorMessage = ex.InnerException?.Message;
+                var errorMessage = new StringBuilder(CanNotInsertDuplicatedValue);
+                errorMessage.Append(Period);
+                errorMessage.Append(WhiteSpace);
+
                 if (exceptionErrorMessage is not null)
                 {
                     errorMessage.Append(TheDuplicatedValueIs);
