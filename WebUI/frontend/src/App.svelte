@@ -29,24 +29,26 @@
     <div class="mainPage">
         <Sidebar/>
         <div class="mainContent">
-            <table>
-                <tr>
-                    <th>No.</th>
-                    <th>Name</th>
-                    <th>BuyingPrice</th>
-                    <th>SellingPrice</th>
-                    <th>Quantity</th>
-                </tr>
-                {#each products as product, index}
+            <div class="table-wrapper">
+                <table>
                     <tr>
-                        <td>{index + 1}</td>
-                        <td>{product.name}</td>
-                        <td>{product.buyingPrice}</td>
-                        <td>{product.sellingPrice}</td>
-                        <td>{product.quantity}</td>
+                        <th>No.</th>
+                        <th>Name</th>
+                        <th>BuyingPrice</th>
+                        <th>SellingPrice</th>
+                        <th>Quantity</th>
                     </tr>
-                {/each}
-            </table>
+                    {#each products as product, index}
+                        <tr>
+                            <td>{index + 1}</td>
+                            <td>{product.name}</td>
+                            <td>{product.buyingPrice}</td>
+                            <td>{product.sellingPrice}</td>
+                            <td>{product.quantity}</td>
+                        </tr>
+                    {/each}
+                </table>
+            </div>
         </div>
     </div>
 </main>
@@ -62,6 +64,14 @@
         margin-left: max(150px, 10%);
         margin-top: 7px;
         padding: 4px 14px 4px 14px;
+    }
+
+    .table-wrapper {
+        /*
+            Directly put "overflow-x: auto" in table will not make the table automatically overflow when needed
+            The table only overflows when we put "overflow-x: auto" in a wrapper element which wraps the table
+        */
+        overflow-x: auto;
     }
 
     table {
