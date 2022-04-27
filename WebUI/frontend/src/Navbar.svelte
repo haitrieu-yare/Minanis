@@ -18,10 +18,10 @@
         margin: 0;
         padding: 0;
         overflow: hidden;
-        background-color: deepskyblue;
         position: fixed;
         top: 0;
         width: 100%;
+        background-color: #0c88d5;
     }
 
     li a {

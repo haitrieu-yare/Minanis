@@ -1,6 +1,7 @@
 <script>
     import Sidebar from "./Sidebar.svelte";
     import Navbar from "./Navbar.svelte";
+    import "./../public/style/color.css";
 
     export let products = [
         {
@@ -61,9 +62,10 @@
     }
 
     .mainContent {
+        height: 100%;
         margin-left: max(150px, 10%);
-        margin-top: 7px;
-        padding: 4px 14px 4px 14px;
+        padding: 16px;
+        background-color: whitesmoke;
     }
 
     .table-wrapper {
@@ -71,26 +73,30 @@
             Directly put "overflow-x: auto" in table will not make the table automatically overflow when needed
             The table only overflows when we put "overflow-x: auto" in a wrapper element which wraps the table
         */
+        padding: 0;
+        margin: 0;
         overflow-x: auto;
+        border-radius: 8px;
+        box-shadow: rgba(149, 157, 165, 0.2) 0 8px 24px;
     }
 
     table {
-        padding: 0;
-        margin: 0;
-        border: 2px solid black;
         border-collapse: collapse;
         width: 100%;
     }
 
     tr:nth-child(even) {
-        background: powderblue;
+        color: #000;
+        background-color: #b8e1fb;
+    }
+    
+    th, td {
+        padding: 0.8em;
     }
 
     th {
-        border: 2px solid black;
-        padding: 0.3em;
-        margin: 2em;
-        color: deepskyblue;
+        color: #fff;
+        background-color: #109bf1;
         width: 7em;
         text-align: left;
     }
@@ -101,9 +107,5 @@
 
     th:nth-child(2) {
         width: 12em;
-    }
-
-    td {
-        padding: 0.4em 0.3em;
     }
 </style>
