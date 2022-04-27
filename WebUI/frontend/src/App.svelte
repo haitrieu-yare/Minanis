@@ -1,7 +1,6 @@
 <script>
     import Sidebar from "./Sidebar.svelte";
     import Navbar from "./Navbar.svelte";
-    import "./../public/style/color.css";
 
     export let products = [
         {

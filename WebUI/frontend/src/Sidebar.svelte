@@ -22,7 +22,7 @@
     }
 
     li a {
-        color: #000;
+        color: darkblue;
         display: block;
         padding: 8px 16px;
         font-weight: bold;

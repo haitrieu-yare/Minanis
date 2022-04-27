@@ -33,14 +33,12 @@
     }
 
     li a:hover {
-        color: rgb(0, 80, 160);;
+        color: darkblue;
     }
 
     h1 {
         font-size: 2em;
-        background: white;
-        -webkit-background-clip: text;
-        color: transparent;
+        color: white;
         width: fit-content;
         padding-left: 14px;
         margin: 0 0 8px 0;
