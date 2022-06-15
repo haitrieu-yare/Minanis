@@ -11,21 +11,21 @@ public class BaseApiController : ControllerBase
 {
     private static string RemoveQueryStringPagination(string queryStringWithPagination)
     {
-        var queryString = queryStringWithPagination.Split(Ampersand).ToList();
+        var queryString = queryStringWithPagination.Split("&").ToList();
+
         queryString[0] = queryString[0].Remove(0, 1);
 
-        var queryStringWithoutPagination =
-            queryString.Where(t => !t.Contains(PageNo) && !t.Contains(PageSize)).ToList();
+        var queryStringWithoutPagination = queryString
+            .Where(query => !query.Contains(PageNo) && !query.Contains(PageSize)).ToList();
+
         queryStringWithoutPagination.Add(string.Empty);
 
-        return string.Join(Ampersand, queryStringWithoutPagination.ToArray());
+        return string.Join("&", queryStringWithoutPagination.ToArray());
     }
 
     private static string BuildPaginationUrl(string relation, string urlWithoutPagination, Pagination pagination)
     {
-        var urlWithPaginationBuilder = new StringBuilder(urlWithoutPagination)
-            .Append(PageNo)
-            .Append(EqualSign);
+        var urlWithPaginationBuilder = new StringBuilder(urlWithoutPagination).Append(PageNo).Append('=');
 
         switch (relation)
         {
@@ -47,10 +47,8 @@ public class BaseApiController : ControllerBase
         }
 
         urlWithPaginationBuilder
-            .Append(Ampersand)
-            .Append(PageSize)
-            .Append(EqualSign)
-            .Append(pagination.PageSize);
+            .Append('&').Append(PageSize)
+            .Append('=').Append(pagination.PageSize);
 
         return urlWithPaginationBuilder.ToString();
     }
@@ -86,17 +84,11 @@ public class BaseApiController : ControllerBase
 
                 if (!string.IsNullOrEmpty(result.NewResourceId))
                 {
-                    var newResourceUrl = new StringBuilder(Request.Scheme);
-                    newResourceUrl.Append(Colon);
-                    newResourceUrl.Append(Slash);
-                    newResourceUrl.Append(Slash);
-                    newResourceUrl.Append(Request.Host);
-                    newResourceUrl.Append(Slash);
-                    newResourceUrl.Append(BaseUrl);
-                    newResourceUrl.Append(Slash);
-                    newResourceUrl.Append(controllerName);
-                    newResourceUrl.Append(Slash);
-                    newResourceUrl.Append(result.NewResourceId);
+                    var newResourceUrl = new StringBuilder(Request.Scheme)
+                        .Append("://").Append(Request.Host)
+                        .Append('/').Append(BaseUrl)
+                        .Append('/').Append(controllerName)
+                        .Append('/').Append(result.NewResourceId);
 
                     return Created(newResourceUrl.ToString(), new CustomResponse
                     {
@@ -124,9 +116,8 @@ public class BaseApiController : ControllerBase
 
                 var queryStringWithoutPagination = RemoveQueryStringPagination(Request.QueryString.ToString());
 
-                var urlWithoutPagination = new StringBuilder(Slash.ToString())
-                    .Append(controllerName)
-                    .Append(QuestionMark)
+                var urlWithoutPagination = new StringBuilder("/")
+                    .Append(controllerName).Append('?')
                     .Append(queryStringWithoutPagination).ToString();
 
                 List<LinkData> linkData = new()

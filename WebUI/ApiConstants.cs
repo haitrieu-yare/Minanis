@@ -9,11 +9,6 @@ public static class ApiConstants
     public const int NotFoundStatusCode = 404;
     
     public const string BaseUrl = "api/minanis/v1";
-    public const char Colon = ':';
-    public const char Slash = '/';
-    public const char QuestionMark = '?';
-    public const char EqualSign = '=';
-    public const char Ampersand = '&';
 
     public const string PageNo = "pageNo";
     public const string PageSize = "pageSize";

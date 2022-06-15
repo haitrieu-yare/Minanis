@@ -1,10 +1,8 @@
-﻿using System.Diagnostics.CodeAnalysis;
-using System.Text.Json.Serialization;
+﻿using System.Text.Json.Serialization;
 using Application;
 
 namespace WebUI;
 
-[SuppressMessage("ReSharper", "UnusedAutoPropertyAccessor.Global")]
 public class CustomResponse
 {
     public int StatusCode { get; init; } = 200;
