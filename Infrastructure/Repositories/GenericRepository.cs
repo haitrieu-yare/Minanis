@@ -16,8 +16,7 @@ public class GenericRepository<T> : IGenericRepository<T> where T : class
 
     public async Task<int> CountAsync(CancellationToken cancellationToken)
     {
-        return await _context.Set<T>()
-            .CountAsync(cancellationToken);
+        return await _context.Set<T>().CountAsync(cancellationToken);
     }
 
     public async Task<IEnumerable<T>> GetAllAsync(

@@ -125,17 +125,17 @@ public class BaseApiController : ControllerBase
                     new LinkData
                     {
                         Href = BuildPaginationUrl(SelfRelation, urlWithoutPagination, result.Pagination),
-                        Rel = SelfRelation
+                        Relation = SelfRelation
                     },
                     new LinkData
                     {
                         Href = BuildPaginationUrl(FirstRelation, urlWithoutPagination, result.Pagination),
-                        Rel = FirstRelation
+                        Relation = FirstRelation
                     },
                     new LinkData
                     {
                         Href = BuildPaginationUrl(LastRelation, urlWithoutPagination, result.Pagination),
-                        Rel = LastRelation
+                        Relation = LastRelation
                     }
                 };
 
@@ -143,14 +143,14 @@ public class BaseApiController : ControllerBase
                     linkData.Add(new LinkData
                     {
                         Href = BuildPaginationUrl(PrevRelation, urlWithoutPagination, result.Pagination),
-                        Rel = PrevRelation
+                        Relation = PrevRelation
                     });
 
                 if (result.Pagination.PageNo >= 1 && result.Pagination.PageNo < result.Pagination.TotalPage)
                     linkData.Add(new LinkData
                     {
                         Href = BuildPaginationUrl(NextRelation, urlWithoutPagination, result.Pagination),
-                        Rel = NextRelation
+                        Relation = NextRelation
                     });
 
                 var customResponse = new CustomResponse

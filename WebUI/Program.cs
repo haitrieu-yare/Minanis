@@ -27,8 +27,7 @@ builder.Services.AddDbContext<DataContext>(opt =>
 
 builder.Services.AddCors(opt =>
 {
-    opt.AddPolicy("CorsPolicy",
-        policy => { policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin(); });
+    opt.AddPolicy("CorsPolicy", policy => policy.AllowAnyMethod().AllowAnyHeader().AllowAnyOrigin());
 });
 
 builder.Services.Configure<RouteOptions>(options => options.LowercaseUrls = true);
@@ -41,6 +40,7 @@ var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 app.UseSwagger();
+
 app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
