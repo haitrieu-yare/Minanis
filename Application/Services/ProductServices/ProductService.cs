@@ -137,16 +137,15 @@ public class ProductService : IProductService
             {
                 var exceptionErrorMessage = ex.InnerException?.Message;
                 var errorMessage = new StringBuilder(CanNotInsertDuplicatedValue);
-                errorMessage.Append(Period);
-                errorMessage.Append(WhiteSpace);
+                errorMessage.Append('.');
 
                 if (exceptionErrorMessage is not null)
                 {
+                    errorMessage.Append(' ');
                     errorMessage.Append(TheDuplicatedValueIs);
-                    errorMessage.Append(WhiteSpace);
-                    errorMessage.Append(OpenParenthesis);
-                    errorMessage.Append(exceptionErrorMessage.Split(OpenParenthesis)[1].Split(CloseParenthesis)[0]);
-                    errorMessage.Append(CloseParenthesis);
+                    errorMessage.Append(" (");
+                    errorMessage.Append(exceptionErrorMessage.Split('(')[1].Split(')')[0]);
+                    errorMessage.Append(").");
                 }
 
                 _logger.LogInformation("{Exception}", errorMessage.ToString());
@@ -210,16 +209,15 @@ public class ProductService : IProductService
             {
                 var exceptionErrorMessage = ex.InnerException?.Message;
                 var errorMessage = new StringBuilder(CanNotInsertDuplicatedValue);
-                errorMessage.Append(Period);
-                errorMessage.Append(WhiteSpace);
+                errorMessage.Append('.');
 
                 if (exceptionErrorMessage is not null)
                 {
+                    errorMessage.Append(' ');
                     errorMessage.Append(TheDuplicatedValueIs);
-                    errorMessage.Append(WhiteSpace);
-                    errorMessage.Append(OpenParenthesis);
-                    errorMessage.Append(exceptionErrorMessage.Split(OpenParenthesis)[1].Split(CloseParenthesis)[0]);
-                    errorMessage.Append(CloseParenthesis);
+                    errorMessage.Append(" (");
+                    errorMessage.Append(exceptionErrorMessage.Split('(')[1].Split(')')[0]);
+                    errorMessage.Append(").");
                 }
 
                 _logger.LogInformation("{Exception}", errorMessage.ToString());
