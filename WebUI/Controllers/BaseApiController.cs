@@ -20,7 +20,7 @@ public class BaseApiController : ControllerBase
 
         queryStringWithoutPagination.Add(string.Empty);
 
-        return string.Join("&", queryStringWithoutPagination.ToArray());
+        return string.Join('&', queryStringWithoutPagination);
     }
 
     private static string BuildPaginationUrl(string relation, string urlWithoutPagination, Pagination pagination)

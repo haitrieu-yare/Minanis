@@ -2,10 +2,6 @@
 
 public static class ApplicationConstants
 {
-    public const char Period = '.';
-    public const char OpenParenthesis = '(';
-    public const char CloseParenthesis = ')';
-    public const char WhiteSpace = ' ';
     public const int SqlExceptionErrorCode = 2601;
     public const string CanNotInsertDuplicatedValue = "Cannot insert duplicated value into table";
     public const string TheDuplicatedValueIs = "The duplicated value is";
