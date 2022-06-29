@@ -1,12 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebUI", "WebUI\WebUI.csproj", "{507C2351-56D7-493D-8010-85CFCC09018A}"
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32616.157
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "API", "WebUI\API.csproj", "{507C2351-56D7-493D-8010-85CFCC09018A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Application", "Application\Application.csproj", "{D816969F-5FEE-4363-B163-8BF9D0C3F2CE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Application", "Application\Application.csproj", "{D816969F-5FEE-4363-B163-8BF9D0C3F2CE}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{FB5311D3-679D-4FB4-815A-977DCEA6D0E1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{FB5311D3-679D-4FB4-815A-977DCEA6D0E1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Domain", "Domain\Domain.csproj", "{B4FE6DFD-19FE-47D4-B223-29B86CDF0ECE}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Domain", "Domain\Domain.csproj", "{B4FE6DFD-19FE-47D4-B223-29B86CDF0ECE}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -30,5 +33,11 @@ Global
 		{B4FE6DFD-19FE-47D4-B223-29B86CDF0ECE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4FE6DFD-19FE-47D4-B223-29B86CDF0ECE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B4FE6DFD-19FE-47D4-B223-29B86CDF0ECE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {EAF59C20-AE24-4767-A8E1-7E1CF2150316}
 	EndGlobalSection
 EndGlobal
