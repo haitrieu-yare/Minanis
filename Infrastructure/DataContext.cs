@@ -18,7 +18,7 @@ public class DataContext : DbContext
     {
         base.OnModelCreating(modelBuilder);
 
-        modelBuilder.Entity<User>().HasIndex(x => x.AccountName).IsUnique();
+        modelBuilder.Entity<User>().HasIndex(x => x.UserName).IsUnique();
         modelBuilder.Entity<User>().HasIndex(x => x.Email).IsUnique();
         modelBuilder.Entity<Product>().HasIndex(x => x.Name).IsUnique();
     }
