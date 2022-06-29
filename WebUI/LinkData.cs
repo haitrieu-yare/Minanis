@@ -1,4 +1,4 @@
-﻿namespace WebUI;
+﻿namespace API;
 
 public class LinkData
 {

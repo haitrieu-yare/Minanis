@@ -1,4 +1,4 @@
-﻿namespace WebUI;
+﻿namespace API;
 
 public static class ApiConstants
 {

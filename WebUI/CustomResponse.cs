@@ -1,7 +1,7 @@
 ﻿using System.Text.Json.Serialization;
 using Application;
 
-namespace WebUI;
+namespace API;
 
 public class CustomResponse
 {

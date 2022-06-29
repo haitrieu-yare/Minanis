@@ -1,4 +1,4 @@
-﻿using Domain.Specifications;
+﻿using Domain.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure;

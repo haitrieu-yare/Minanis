@@ -44,25 +44,6 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "ProductBatch",
-                columns: table => new
-                {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    ProductId = table.Column<int>(type: "int", nullable: false),
-                    BuyingPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
-                    SellingPrice = table.Column<decimal>(type: "decimal(18,4)", nullable: false),
-                    Quantity = table.Column<int>(type: "int", nullable: false),
-                    Status = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ExpiredDate = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    CreatedDate = table.Column<DateTime>(type: "datetime2", nullable: false)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_ProductBatch", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
                 name: "User",
                 columns: table => new
                 {
@@ -142,9 +123,6 @@ namespace Infrastructure.Migrations
         {
             migrationBuilder.DropTable(
                 name: "OrderProduct");
-
-            migrationBuilder.DropTable(
-                name: "ProductBatch");
 
             migrationBuilder.DropTable(
                 name: "User");

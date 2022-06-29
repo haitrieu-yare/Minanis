@@ -1,9 +1,9 @@
 ﻿using System.Text;
 using Application;
 using Microsoft.AspNetCore.Mvc;
-using static WebUI.ApiConstants;
+using static API.ApiConstants;
 
-namespace WebUI.Controllers;
+namespace API.Controllers;
 
 [ApiController]
 [Route(BaseUrl)]

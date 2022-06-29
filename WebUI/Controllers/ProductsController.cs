@@ -4,7 +4,7 @@ using Application.Interfaces;
 using Application.Services.ProductServices.ProductDTOs;
 using Microsoft.AspNetCore.Mvc;
 
-namespace WebUI.Controllers;
+namespace API.Controllers;
 
 [ApiController]
 [Route("[controller]")]

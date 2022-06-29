@@ -11,7 +11,6 @@ public class DataContext : DbContext
 
     public DbSet<User> User => Set<User>();
     public DbSet<Product> Product => Set<Product>();
-    public DbSet<ProductBatch> ProductBatch => Set<ProductBatch>();
     public DbSet<Order> Order => Set<Order>();
     public DbSet<OrderProduct> OrderProduct => Set<OrderProduct>();
 
